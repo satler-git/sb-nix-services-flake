@@ -37,7 +37,12 @@
                 inputs.services-flake.processComposeModules.default
               ];
 
-              services = { };
+              services = {
+                redis."r1" = {
+                  enable = true;
+                  port = 6379; # port 6379 is the default
+                };
+              };
             };
 
           devShells.default = pkgs.mkShell {
