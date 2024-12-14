@@ -18,9 +18,9 @@
         "x86_64-darwin"
         "x86_64-linux"
       ];
-      # imports = [
-      #   inputs.process-compose-flake.flakeModule
-      # ];
+      imports = [
+        inputs.process-compose-flake.flakeModule
+      ];
       perSystem =
         {
           self',
@@ -30,8 +30,20 @@
           ...
         }:
         {
+          process-compose."default-service" =
+            { config, ... }:
+            {
+              imports = [
+                inputs.services-flake.processComposeModules.default
+              ];
+
+              services = { };
+            };
+
           devShells.default = pkgs.mkShell {
-            inputsFrom = [ ];
+            inputsFrom = [
+              config.process-compose."default-service".services.outputs.devShell
+            ];
             buildInputs = with pkgs; [ hello ];
           };
         };
